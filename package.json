@@ -1,0 +1,11 @@
+{
+  "name": "grumpbot",
+  "version": "0.0.1",
+  "description": "He grumpy but loves gaming",
+  "main": "bot.js",
+  "author": "Jipp and Sigma",
+  "dependencies": {
+    "discord.io": "github:woor/discord.io#gateway_v6",
+    "winston": "^2.4.1"
+  }
+}
