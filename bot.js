@@ -20,6 +20,12 @@ bot.on('ready', function (evt) {
     logger.info(bot.username + ' - (' + bot.id + ')');
 });
 console.log("gothere");
+
+
+
+var OverwatchGroupID = [];
+var OverwatchGroupUser = [];
+
 bot.on('message', function (user, userID, channelID, message, evt) {
    
     // Our bot needs to know if it will execute a command
@@ -31,7 +37,9 @@ bot.on('message', function (user, userID, channelID, message, evt) {
         args = args.splice(1);
         console.log(cmd);
         switch(cmd) {
-            // .gboobs
+///////////////////////////////////////////////////
+///////////Memes//////////////////////////////////
+/////////////////////////////////////////////////
             case 'boobs':
                 bot.sendMessage({
                     to: channelID,
@@ -44,7 +52,92 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     message: '(‿ˠ‿)'
                 });
                 break;
-            // Just add any case commands if you want to..
-         }
+            case 'echo':
+                bot.sendMessage({
+                    to: channelID,
+                    message: args.toString().replace(/,/g ,' ')
+                });
+                break;
+            case 'help':
+                bot.sendMessage({
+                    to: channelID,
+                    message: 'gboobs - Bewbs \ngass - Ass \ngecho - Repeat after me \ngadd (group) - Join a party\ngwho (group) - Lists everyone in the party\ngstart (group) - Party leader can ping and start'
+                });
+                break;
+//////////////////////////////////////////////////////////////////
+//////////PARTY COMMANDS/////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+            case 'add':
+                if (args[0] == ("overwatch" || "Overwatch")){
+                    if (OverwatchGroupUser.length < 6){
+                        if (user != (OverwatchGroupUser[0] || OverwatchGroupUser[1] || OverwatchGroupUser[2] || OverwatchGroupUser[3] || OverwatchGroupUser[4] || OverwatchGroupUser[5])){
+                            OverwatchGroupUser[OverwatchGroupUser.length] = user;
+                            OverwatchGroupID[OverwatchGroupID.length] = userID;
+                            bot.sendMessage({
+                                to: channelID,
+                                message: `<@${userID}> is in for some Overwatch! (${OverwatchGroupUser.length}/6)`
+                            });
+                        } else {
+                            bot.sendMessage({
+                                to: channelID,
+                                message: 'You have already joined the group.'
+                            });
+                        }
+                    } else {
+                        bot.sendMessage({
+                            to: channelID,
+                            message: 'Group is full'
+                        });
+                    }
+                } else {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Invalid group!'
+                    });
+                }
+                break;
+            case 'who':
+                if (args[0] == ("overwatch" || "Overwatch")){
+                    if (OverwatchGroupUser.length > 0){
+                        bot.sendMessage({
+                            to: channelID,
+                            message: `${OverwatchGroupUser[0]} (leader), ${OverwatchGroupUser[1]}, ${OverwatchGroupUser[2]}, ${OverwatchGroupUser[3]}, ${OverwatchGroupUser[4]}, ${OverwatchGroupUser[5]} (${OverwatchGroupUser.length}/6)`.replace(/undefined/g, "empty")
+                        });
+                    } else {
+                        bot.sendMessage({
+                            to: channelID,
+                            message: 'Group is empty'
+                        });
+                    }
+                } else {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Invalid group!'
+                    });
+                }
+                break;
+            case 'start':
+                if (args[0] == ("overwatch" || "Overwatch")){
+                    if (user == OverwatchGroupUser[0]){
+                        bot.sendMessage({
+                            to: channelID,
+                            message: `We are starting! <@${OverwatchGroupID[0]}> <@${OverwatchGroupID[1]}> <@${OverwatchGroupID[2]}> <@${OverwatchGroupID[3]}> <@${OverwatchGroupID[4]}> <@${OverwatchGroupID[5]}>`.replace(/<@undefined>/g, "")
+                        });
+                        OverwatchGroupUser = [];
+                        OverwatchGroupID = [];
+                    } else {
+                        bot.sendMessage({
+                            to: channelID,
+                            message: 'You are not the group leader!'
+                        });
+                    }
+                } else {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Invalid group!'
+                    });
+                }
+                break;       
+         } 
      }
 });
